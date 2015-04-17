@@ -16,7 +16,7 @@ public class Sorting
             System.out.println("" + a[i]);
         }
         System.out.println();
-        Sorting.quickSort(a);
+        Sorting.heapSort(a);
         System.out.println();
         for(int i = 0; i < a.length; i++)
             System.out.println("" + a[i]);
@@ -37,8 +37,8 @@ public class Sorting
         
         for(int sorted = numitems - 1; sorted > start; sorted--)
         {
-            numitems--;
-            int num = removeMax(a, numitems); 
+            //numitems--;
+            int num = removeMax(a, sorted); 
             a[sorted] = num;
         }
         return (long) 0.0;
