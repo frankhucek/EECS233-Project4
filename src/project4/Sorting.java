@@ -6,20 +6,41 @@ package project4;
  */
 public class Sorting
 {
+    /*private static long start = 0;
+    private static long end = 0;
     
+    private static void startTime()
+    {
+        start = System.nanoTime();
+    }
+    
+    private static long duration()
+    {
+        end = System.nanoTime();
+
+        long elapsedTime = end - start;
+
+	start = 0;
+	end = 0;
+
+	return elapsedTime;
+    }
+    */
     public static void main(String[] args)
     {
-        int[] a = new int[100];
+        /*int[] a = new int[1000000];
         for(int i = 0; i < a.length; i++)
         {
             a[i] = (int)(Math.random() * a.length);
-            System.out.println("" + a[i]);
-        }
+            //System.out.println("" + a[i]);
+        }*/
         System.out.println();
-        Sorting.mergeSort(a);
+        //long time = mergeSort(Reporting1.randomList(1000000));
         System.out.println();
-        for(int i = 0; i < a.length; i++)
-            System.out.println("" + a[i]);
+        //for(int i = 0; i < a.length; i++)
+            //System.out.println("" + a[i]);
+        Reporting1 rep = new Reporting1();
+        System.out.println("Time in ns: " + quickSort(rep.randomList(1000000)));
     }
     
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
@@ -27,10 +48,17 @@ public class Sorting
     //////////////////////////////////////////////////////////////////
     public static long heapSort(int[] arr)
     {
-        return ascendingHeapSort(arr,0,arr.length);
+        if(arr.length <= 1)
+        {
+            return (long)0;
+        }
+        //startTime();
+        long start = System.nanoTime();
+        ascendingHeapSort(arr,0,arr.length);
+        return System.nanoTime() - start;
     }
     
-    private static long ascendingHeapSort(int[] a, int start, int end)
+    private static void ascendingHeapSort(int[] a, int start, int end)
     {
         int numitems = end - start; //a.length
         buildHeap(a, numitems);
@@ -40,7 +68,6 @@ public class Sorting
             int num = removeMax(a, sorted); 
             a[sorted] = num;
         }
-        return (long) 0.0;
     }
     
     private static void siftDown(int[] a, int numitems, int index)
@@ -85,7 +112,27 @@ public class Sorting
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     ////\\\\\\\\\\\\\\\\\\\//// QUICKSORT ////\\\\\\\\\\\\\\\\\\\////
     ////////////////////////////////////////////////////////////////
-    public static void swap(int[] a, int i, int j)
+    private static void ascendingQuickSort(int[] a, int left, int right)
+    {
+        if(left >= right)
+            return;
+        int j = partition(a, left, right);
+        ascendingQuickSort(a, left, j - 1);
+        ascendingQuickSort(a, j + 1, right);
+    }
+    
+    public static long quickSort(int[] a)
+    {
+        if(a.length <= 1)
+        {
+            return (long)0;
+        }
+        long start = System.nanoTime();
+        ascendingQuickSort(a,0,a.length - 1);
+        return System.nanoTime() - start;
+    }
+    
+    private static void swap(int[] a, int i, int j)
     {
         int temp = a[i];
         a[i] = a[j];
@@ -124,27 +171,19 @@ public class Sorting
         return j;
     }
     
-    private static void ascendingQuickSort(int[] a, int left, int right)
-    {
-        if(left >= right)
-            return;
-        int j = partition(a, left, right);
-        ascendingQuickSort(a, left, j - 1);
-        ascendingQuickSort(a, j + 1, right);
-    }
-    
-    public static long quickSort(int[] a)
-    {
-        ascendingQuickSort(a,0,a.length - 1);
-        return (long) 0.0;
-    }
     
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     ////\\\\\\\\\\\\\\\\\\\\//// MERGESORT ////\\\\\\\\\\\\\\\\\\\\\\////
     ////////////////////////////////////////////////////////////////////
-    public static void mergeSort(int[] arr)
+    public static long mergeSort(int[] arr)
     {
+        if(arr.length <= 1)
+        {
+            return (long)0;
+        }
+        long start = System.nanoTime();
         ascendingMergeSort(arr); 
+        return System.nanoTime() - start;
     }
     
     /**
@@ -158,8 +197,8 @@ public class Sorting
         int[] to = new int[a.length];
         for (int blockSize = 1; blockSize < a.length; blockSize *= 2) 
         {
-            for (int start = 0; start < a.length; start += 2*blockSize)
-                mergeWithoutCopy(from, to, start, start + blockSize, start + 2*blockSize);
+            for (int begin = 0; begin < a.length; begin += 2*blockSize)
+                mergeWithoutCopy(from, to, begin, begin + blockSize, begin + 2*blockSize);
             int[] temp = from;
             from = to;
             to = temp;
