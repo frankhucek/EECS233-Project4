@@ -5,59 +5,33 @@ package project4;
  * @author Frank Hucek
  */
 public class Sorting
-{
-    /*private static long start = 0;
-    private static long end = 0;
-    
-    private static void startTime()
-    {
-        start = System.nanoTime();
-    }
-    
-    private static long duration()
-    {
-        end = System.nanoTime();
-
-        long elapsedTime = end - start;
-
-	start = 0;
-	end = 0;
-
-	return elapsedTime;
-    }
-    */
-    public static void main(String[] args)
-    {
-        /*int[] a = new int[1000000];
-        for(int i = 0; i < a.length; i++)
-        {
-            a[i] = (int)(Math.random() * a.length);
-            //System.out.println("" + a[i]);
-        }*/
-        System.out.println();
-        //long time = mergeSort(Reporting1.randomList(1000000));
-        System.out.println();
-        //for(int i = 0; i < a.length; i++)
-            //System.out.println("" + a[i]);
-        Reporting1 rep = new Reporting1();
-        System.out.println("Time in ns: " + quickSort(rep.randomList(1000000)));
-    }
-    
+{    
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     ////\\\\\\\\\\\\\\\\\\\//// HEAPSORT /////\\\\\\\\\\\\\\\\\\\\/////
     //////////////////////////////////////////////////////////////////
+    
+    /**
+     * Heap Sort algorithm
+     * @param arr the array to sort using heapSort
+     * @return the time the algorithm took to run
+     */
     public static long heapSort(int[] arr)
     {
         if(arr.length <= 1)
         {
             return (long)0;
         }
-        //startTime();
         long start = System.nanoTime();
         ascendingHeapSort(arr,0,arr.length);
         return System.nanoTime() - start;
     }
     
+    /**
+     * HeapSort helper method doing the real work
+     * @param a the array to sort
+     * @param start starting index
+     * @param end ending index
+     */
     private static void ascendingHeapSort(int[] a, int start, int end)
     {
         int numitems = end - start; //a.length
@@ -70,6 +44,12 @@ public class Sorting
         }
     }
     
+    /**
+     * The real key to HeapSort - sifts an element at an index down the heap
+     * @param a input array
+     * @param numitems number of items
+     * @param index index to sift down from
+     */
     private static void siftDown(int[] a, int numitems, int index)
     {
         int elementToSift = a[index];
@@ -95,6 +75,12 @@ public class Sorting
         }
     }
     
+    /**
+     * Removes the max element from the heap
+     * @param a input array
+     * @param numitems number of items
+     * @return the element removed
+     */
     private static int removeMax(int[] a, int numitems)
     {
         int element = a[0];
@@ -103,6 +89,11 @@ public class Sorting
         return element;
     }
     
+    /**
+     * Builds the heap
+     * @param a input array
+     * @param numitems number of items
+     */
     private static void buildHeap(int[] a, int numitems)
     {
         for(int i = (numitems - 2)/2; i >= 0; i--)
@@ -112,6 +103,13 @@ public class Sorting
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     ////\\\\\\\\\\\\\\\\\\\//// QUICKSORT ////\\\\\\\\\\\\\\\\\\\////
     ////////////////////////////////////////////////////////////////
+    
+    /**
+     * QuickSort algorithm helper method
+     * @param a input array
+     * @param left left index
+     * @param right right index
+     */
     private static void ascendingQuickSort(int[] a, int left, int right)
     {
         if(left >= right)
@@ -121,6 +119,11 @@ public class Sorting
         ascendingQuickSort(a, j + 1, right);
     }
     
+    /**
+     * QuickSort algorithm
+     * @param a input array
+     * @return The time the algorithm takes
+     */
     public static long quickSort(int[] a)
     {
         if(a.length <= 1)
@@ -132,6 +135,12 @@ public class Sorting
         return System.nanoTime() - start;
     }
     
+    /**
+     * swaps elements at index i and j in array a
+     * @param a
+     * @param i
+     * @param j 
+     */
     private static void swap(int[] a, int i, int j)
     {
         int temp = a[i];
@@ -139,6 +148,14 @@ public class Sorting
         a[j] = temp;
     }
     
+    /**
+     * Picks a random split point and sorts items less than or equal
+     * on the left of it and items greater than on the right
+     * @param a input array
+     * @param left left index
+     * @param right right index
+     * @return the splitting index
+     */
     private static int partition(int[] a, int left, int right)
     {
         int pivot, i, j, randm;
@@ -175,6 +192,12 @@ public class Sorting
     //\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     ////\\\\\\\\\\\\\\\\\\\\//// MERGESORT ////\\\\\\\\\\\\\\\\\\\\\\////
     ////////////////////////////////////////////////////////////////////
+    
+    /**
+     * MergeSort algorithm
+     * @param arr input array
+     * @return the time the algorithm takes to run
+     */
     public static long mergeSort(int[] arr)
     {
         if(arr.length <= 1)
@@ -187,9 +210,10 @@ public class Sorting
     }
     
     /**
+     * MergeSort helper method
      * Saves on buffer space.
-     * Currently working, but analyses are being run.
-     * @param a 
+     * Iterative version of mergeSort
+     * @param a the input array
      */
     public static void ascendingMergeSort(int[] a) 
     {
@@ -208,32 +232,36 @@ public class Sorting
             for (int k = 0; k < a.length; k++)
                 a[k] = from[k];
         }
-   }
-
-    private static void mergeWithoutCopy(int[] from, int[] to, int lo, int mid, int hi) {
-       // DK: cannot just return if mid >= a.length, but must still copy remaining elements!
-       // DK: add two tests to first verify "mid" and "hi" are in range
+    }
+    
+    /**
+     * Merge method for mergeSort algorithm
+     * @param from the from array
+     * @param to the array to copy to
+     * @param lo 
+     * @param mid
+     * @param hi 
+     */
+    private static void mergeWithoutCopy(int[] from, int[] to, int left, int mid, int right) 
+    {
        if (mid > from.length) 
            mid = from.length;
-       if (hi > from.length) 
-           hi = from.length;
+       if (right > from.length) 
+           right = from.length;
        
-       int i = lo;
+       int i = left;
        int j = mid;
        
-       for (int k = lo; k < hi; k++) 
+       for (int k = left; k < right; k++) 
        {
           if(i == mid)          
               to[k] = from[j++];
-          else if (j == hi)           
+          else if (j == right)           
               to[k] = from[i++];
           else if (from[j] < from[i]) 
               to[k] = from[j++];
           else                        
               to[k] = from[i++];
        }
-       // DO NOT copy back
-       // for (int k = lo; k < hi; k++)
-       //   a[k] = aux[k];
     }
 }
